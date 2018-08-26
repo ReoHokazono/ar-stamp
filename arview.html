@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/aframe/build/aframe-ar.js"> </script>
+    <link rel="stylesheet" href="style/arview.css">
+    <title>AR</title>
+</head>
+<body>
+    <a-scene embedded arjs="trackingMethod:best; debugUIEnabled:false;">
+        <a-marker preset="hiro" id="test">
+         <a-box position="0 0.5 0" wireframe="true"></a-box>
+        </a-marker>
+        
+        <a-marker preset="custom" type="pattern" url="marker/m01.patt" >
+            <a-box position="0 0.5 0" wireframe="true"></a-box>
+        </a-marker>
+             
+        <a-entity camera></a-entity>
+    </a-scene>
+    <div class="container">
+        
+    </div>
+    <script>
+        // let markerIsShown = false
+
+        // setInterval(()=>{
+        
+        //     if (document.querySelector("a-marker").object3D.visible == true && !markerIsShown){
+        //         markerIsShown = true
+        //         window.parent.updateMarkerState(true,"test")
+        //     }else if (document.querySelector("a-marker").object3D.visible == false && markerIsShown){
+        //         markerIsShown = false
+        //         window.parent.updateMarkerState(false,"test")
+        //     }
+        // },100)
+    </script>
+</body>
+</html>
