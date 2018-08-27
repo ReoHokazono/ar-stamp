@@ -3,15 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-    
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">    
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>    
     <script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/aframe/build/aframe-ar.js"> </script>
-    <script   src="https://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="   crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style/main.css">
     <title>M科プロジェクト スタンプラリー</title>
 </head>
@@ -28,6 +24,7 @@
                     dur="4000"
                     easing="linear"
                     repeat="indefinite"
+                    
                 ></a-animation>
             </a-box>
             <a-text 
@@ -120,14 +117,6 @@
             wireframe="true"
             wireframe-linewidth="3"
             >
-                <!-- <a-animation
-                    attribute="rotation"
-                    from="0 0 0"
-                    to="0 360 0"
-                    dur="4000"
-                    easing="linear"
-                    repeat="indefinite"
-                > -->
             </a-box>
             <a-text 
                 value="Strength\nof Materials\nLab" 
@@ -141,14 +130,6 @@
 
         <a-marker preset="custom" type="pattern" url="marker/m05.patt"  markerid="5">
             <a-box position="0 0.7 0" color="#37ECBA" >
-                <!-- <a-animation
-                    attribute="rotation"
-                    from="0 0 0"
-                    to="0 360 0"
-                    dur="4000"
-                    easing="linear"
-                    repeat="indefinite"
-                > -->
             </a-box>
             <a-text 
                 value="E and R\nSupport\nCenter" 
@@ -187,15 +168,6 @@
                 color="#007ADF" 
                 wireframe="true"
                 wireframe-linewidth="3">
-                <!-- <a-animation
-                    attribute="rotation"
-                    from="0 0 0"
-                    to="0 360 0"
-                    dur="4000"
-                    easing="linear"
-                    repeat="indefinite"
-                > -->
-
             </a-box>
             <a-text 
                 value="Biomedical\nEngineering\nLab" 
@@ -225,6 +197,7 @@
             <div class="tab-title">スタンプ帳</div>
 
             <div id="stamp-num-text">残り7ヶ所です</div>
+            <div id="stamp-complete"><img src="images/stamps/complete.png" alt="" id="stamp-complete-img"></div>
             <div class="stamp-card-outer">
                 <div class="stamp-card">
                     <img src="images/stamps/empty.png" alt="" class="stamp-image" id="stamp-img-1">
@@ -349,10 +322,6 @@
                     this.mapSelected = false
                     this.infoSelected = false
 
-                    if (tab == "camera"){
-                        
-                    }
-
                     switch (tab) {
                         case "camera":
                             this.cameraSelected = true
@@ -372,14 +341,10 @@
             mounted(){
             }
         })           
-        $(function() {
-            let $body = $(document)
-            $body.bind('scroll', function() {
-                if ($body.scrollLeft() !== 0) {
-                    $body.scrollLeft(0);
-                }
-            });
-        }); 
+ 
+        window.addEventListener("scroll",()=>{
+            document.body.scrollLeft = 0
+        },false)
 
         let displayTimeCount = 0
         let markerIsShown = false
@@ -397,8 +362,15 @@
         if (currentPoints == null){
             currentPoints = 0
         }
-        const displayText = "残り" + String(fullPoints - currentPoints) + "ヶ所です"
-        document.getElementById("stamp-num-text").innerText = displayText
+
+        const restPoints = fullPoints - currentPoints
+        if (restPoints == 0){
+            document.getElementById("stamp-num-text").innerText = "コンプリートしました!"
+            document.getElementById("stamp-complete").style.display = "block"
+        }else{
+            const displayText = "残り" + String(restPoints) + "ヶ所です"
+            document.getElementById("stamp-num-text").innerText = displayText
+        }
 
         setInterval(()=>{
             let elements = document.getElementsByTagName("a-marker")
@@ -426,9 +398,16 @@
                 }
                 currentPoints++
                 localStorage.setItem("visitedPoints",String(currentPoints))
-                const displayText = "残り" + String(fullPoints - currentPoints) + "ヶ所です"
-                document.getElementById("stamp-num-text").innerText = displayText
+                const restPoints = fullPoints - currentPoints
 
+                let displayText = ""
+                if (restPoints == 0){
+                    document.getElementById("stamp-num-text").innerText = "コンプリートしました!"
+                    document.getElementById("stamp-complete").style.display = "block"
+                }else{
+                    const displayText = "残り" + String(restPoints) + "ヶ所です"
+                    document.getElementById("stamp-num-text").innerText = displayText
+                }
                 swal({
                     title:"スタンプしました!",
                     text: displayText,
@@ -439,14 +418,35 @@
                         style:"width:90%"
                         }
                     }
+                }).then(()=> {
+                    if (restPoints == 0){
+                        swal({
+                            title:"コンプリートしました!",
+                            text: displayText,
+                            content: {
+                                element: "img",
+                                attributes: {
+                                src:"images/stamps/complete.png",
+                                style:"width:90%"
+                            }
+                    }
                 })
+                    }
+                })
+
 
                 localStorage.setItem("s" + String(displayedMarkerId),"1")
                 document.getElementById("stamp-img-" + String(displayedMarkerId)).src = "images/stamps/s" + String(displayedMarkerId)+ ".png"
             }
         },100)
-
-
+        
+        //画像キャッシュ
+        for (let index = 1; index <= fullPoints; index++) {
+            let image = new Image()
+            image.src = "images/stamps/s" + String(index)+ ".png"
+        }
+        let image = new Image()
+        image.src = "images/stamps/complete.png"
     </script>
 </body>
 </html>

@@ -4,7 +4,6 @@ html {
     Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     overflow: hidden;
     -webkit-overflow-scrolling: touch;
-
 }
 
 body{
@@ -12,8 +11,6 @@ body{
     margin: 0px;
     overflow: hidden;
 }
-
-
 
 h1,h2,h3,h4,h5,h6 {
     font-size: 100%;
@@ -126,8 +123,6 @@ a-scene {
     text-align: center;
     color: #292929;
 }
-
-
 
 img {
     -webkit-touch-callout: none;
@@ -250,4 +245,15 @@ video {
 
 .swal-footer {
     text-align: center;
+}
+
+#stamp-complete {
+    display: none;
+}
+
+#stamp-complete-img {
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
