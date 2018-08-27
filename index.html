@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">    
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>    
-    <script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/aframe/build/aframe-ar.js"> </script>
     <link rel="stylesheet" href="style/main.css">
     <title>M科プロジェクト スタンプラリー</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124701791-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-124701791-1');
+    </script>
 </head>
 
 <body>
+    <script src="js/aframe.min.js"></script>
+    <script src="js/aframe-ar.min.js"> </script>
     <a-scene embedded arjs="trackingMethod:best; debugUIEnabled:false;">                 
-        
         <a-marker preset="custom" type="pattern" url="marker/m01.patt" markerid="1" >
             <a-box position="0 0.7 0" color="#742DC0" >
                 <a-animation
@@ -23,8 +26,7 @@
                     to="0 0 360"
                     dur="4000"
                     easing="linear"
-                    repeat="indefinite"
-                    
+                    repeat="indefinite" 
                 ></a-animation>
             </a-box>
             <a-text 
@@ -143,14 +145,6 @@
 
         <a-marker preset="custom" type="pattern" url="marker/m06.patt" markerid="6">
             <a-box position="0 0.7 0" color="#2575FC" >
-                <!-- <a-animation
-                    attribute="rotation"
-                    from="0 0 0"
-                    to="0 360 0"
-                    dur="4000"
-                    easing="linear"
-                    repeat="indefinite"
-                > -->
             </a-box>
             <a-text 
                 value="Kinematics\nEngineering\nLab" 
@@ -179,18 +173,10 @@
                 font="sourcecodepro"
             ></a-text>
         </a-marker>
-
-        
-
         <a-entity camera></a-entity>
     </a-scene>
     <div id="main-container">        
         <div id="camera-container" class="tab-container" v-show="cameraSelected">
-            <!-- <div id="stamp-button-outer">
-                    <div id="stamp-button-box">
-                            <div id="stamp-button-label">STAMP!</div>
-                    </div>
-            </div> -->
         </div>
         
         <div id="stamp-container" class="tab-container" v-show="stampSelected">
@@ -253,11 +239,14 @@
         </div>
 
         <div id="map-container" class="tab-container" v-show="mapSelected">
-            <div class="tab-title">マップ</div>
+            <div class="tab-title">マップ(未実装)</div>
         </div>
 
         <div id="info-container" class="tab-container" v-show="infoSelected">
-            <div class="tab-title">このWEBアプリについて</div>
+            <div class="tab-title">このページについて</div>
+            <div class="info-section">連絡先</div>
+            <div class="info-contents">nit.numazu.m[at]gmail.com</div>
+
             <div id="copyright">
                     Copyright © 2018 <br>
                     National Institute of Technology, Numazu Colledge <br>
@@ -297,156 +286,9 @@
             </div>
         </div>
     </div>
-    <script>
-        Vue.config.ignoredElements = [
-        "a-scene",
-        "a-entity",
-        "a-camera",
-        "a-box",
-        "a-marker"
-        ]
-
-        const app = new Vue({
-            el: "#main-container",
-            data: {
-                cameraSelected: true,
-                stampSelected: false,
-                mapSelected: false,
-                infoSelected: false,
-                video: {}
-            },
-            methods: {
-                tabSelected(tab){
-                    this.cameraSelected = false
-                    this.stampSelected = false
-                    this.mapSelected = false
-                    this.infoSelected = false
-
-                    switch (tab) {
-                        case "camera":
-                            this.cameraSelected = true
-                            break
-                        case "stamp":
-                            this.stampSelected = true
-                            break
-                        case "map":
-                            this.mapSelected = true
-                            break
-                        default:
-                            this.infoSelected = true
-                            break
-                    }
-                }
-            },  
-            mounted(){
-            }
-        })           
- 
-        window.addEventListener("scroll",()=>{
-            document.body.scrollLeft = 0
-        },false)
-
-        let displayTimeCount = 0
-        let markerIsShown = false
-        let displayedMarkerId = 0
-        const fullPoints = 7
-
-        for (let index = 1; index <= 7; index++) {
-            if (localStorage.getItem("s" + String(index)) == "1"){
-                document.getElementById("stamp-img-" + String(index)).src = "images/stamps/s" + String(index)+ ".png"
-            }
-            
-        }
-
-        let currentPoints = Number(localStorage.getItem("visitedPoints"))
-        if (currentPoints == null){
-            currentPoints = 0
-        }
-
-        const restPoints = fullPoints - currentPoints
-        if (restPoints == 0){
-            document.getElementById("stamp-num-text").innerText = "コンプリートしました!"
-            document.getElementById("stamp-complete").style.display = "block"
-        }else{
-            const displayText = "残り" + String(restPoints) + "ヶ所です"
-            document.getElementById("stamp-num-text").innerText = displayText
-        }
-
-        setInterval(()=>{
-            let elements = document.getElementsByTagName("a-marker")
-            markerIsShown = false
-            for (let index = 0; index < elements.length; index++) {
-                const element = elements[index];
-                if (element.object3D.visible) {
-                    displayTimeCount++
-                    displayedMarkerId = Number(element.getAttribute("markerid"))
-                    markerIsShown = true
-                }
-            }
-
-            if (!markerIsShown){
-                displayTimeCount = 0
-            }
-            
-            if (displayTimeCount == 8 && markerIsShown ){
-                const alreadyDetected = localStorage.getItem("s" + String(displayedMarkerId),"1")
-                if (alreadyDetected) { return }
-
-                let currentPoints = Number(localStorage.getItem("visitedPoints"))
-                if (currentPoints == null){
-                    currentPoints = 0
-                }
-                currentPoints++
-                localStorage.setItem("visitedPoints",String(currentPoints))
-                const restPoints = fullPoints - currentPoints
-
-                let displayText = ""
-                if (restPoints == 0){
-                    document.getElementById("stamp-num-text").innerText = "コンプリートしました!"
-                    document.getElementById("stamp-complete").style.display = "block"
-                }else{
-                    const displayText = "残り" + String(restPoints) + "ヶ所です"
-                    document.getElementById("stamp-num-text").innerText = displayText
-                }
-                swal({
-                    title:"スタンプしました!",
-                    text: displayText,
-                    content: {
-                    element: "img",
-                    attributes: {
-                        src:"images/stamps/s" + String(displayedMarkerId)+ ".png",
-                        style:"width:90%"
-                        }
-                    }
-                }).then(()=> {
-                    if (restPoints == 0){
-                        swal({
-                            title:"コンプリートしました!",
-                            text: displayText,
-                            content: {
-                                element: "img",
-                                attributes: {
-                                src:"images/stamps/complete.png",
-                                style:"width:90%"
-                            }
-                    }
-                })
-                    }
-                })
-
-
-                localStorage.setItem("s" + String(displayedMarkerId),"1")
-                document.getElementById("stamp-img-" + String(displayedMarkerId)).src = "images/stamps/s" + String(displayedMarkerId)+ ".png"
-            }
-        },100)
-        
-        //画像キャッシュ
-        for (let index = 1; index <= fullPoints; index++) {
-            let image = new Image()
-            image.src = "images/stamps/s" + String(index)+ ".png"
-        }
-        let image = new Image()
-        image.src = "images/stamps/complete.png"
-    </script>
+    <script src="js/sweetalert.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="js/ua-parser.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
