@@ -53,7 +53,7 @@ const fullPoints = 7
 
 for (let index = 1; index <= 7; index++) {
     if (localStorage.getItem("s" + String(index)) == "1") {
-        document.getElementById("stamp-img-" + String(index)).src = "images/stamps/s" + String(index) + ".png"
+        document.getElementById("stamp-img-" + String(index)).src = "../images/stamps/s" + String(index) + ".png"
     }
 
 }
@@ -114,7 +114,7 @@ setInterval(() => {
             content: {
                 element: "img",
                 attributes: {
-                    src: "images/stamps/s" + String(displayedMarkerId) + ".png",
+                    src: "../images/stamps/s" + String(displayedMarkerId) + ".png",
                     style: "width:90%"
                 }
             }
@@ -126,7 +126,7 @@ setInterval(() => {
                     content: {
                         element: "img",
                         attributes: {
-                            src: "images/stamps/complete.png",
+                            src: "../images/stamps/complete.png",
                             style: "width:90%"
                         }
                     }
@@ -136,21 +136,20 @@ setInterval(() => {
 
 
         localStorage.setItem("s" + String(displayedMarkerId), "1")
-        document.getElementById("stamp-img-" + String(displayedMarkerId)).src = "images/stamps/s" + String(displayedMarkerId) + ".png"
+        document.getElementById("stamp-img-" + String(displayedMarkerId)).src = "../images/stamps/s" + String(displayedMarkerId) + ".png"
         ga('set', 'dimension1', String(currentPoints));
     }
 }, 100)
 
 for (let index = 1; index <= fullPoints; index++) {
     let image = new Image()
-    image.src = "images/stamps/s" + String(index) + ".png"
+    image.src = "../images/stamps/s" + String(index) + ".png"
 }
 let image = new Image()
-image.src = "images/stamps/complete.png"
+image.src = "../images/stamps/complete.png"
 
 const parser = new UAParser()
 const result = parser.getResult()
-console.log(result.os.name)
 if (result.browser.name != "Mobile Safari" && result.os.name == "iOS"){
     swal ( "" ,  "Safariで開いてください" ,  "error" )
 }else if (result.os.name == "iOS" && result.os.version.startsWith("10")){
@@ -159,4 +158,9 @@ if (result.browser.name != "Mobile Safari" && result.os.name == "iOS"){
     swal ( "" ,  "Google Chromeで開いてください" ,  "error" )
 }else if (result.os.name != "iOS" && result.os.name != "Android" ){
     swal ( "" ,  "PCでは正常に動作しない場合があります" ,  "error" )
+}else {
+    if (localStorage.getItem("isFirstVisit") == null){
+        swal("使い方", "校内に掲示されたマーカーをカメラで写すとスタンプを集めることができます。")
+        localStorage.setItem("isFirstVisit","false")
+    }
 }
