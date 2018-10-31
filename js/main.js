@@ -138,7 +138,7 @@ setInterval(() => {
             }
         })
 
-
+        
         localStorage.setItem("s" + String(displayedMarkerId), "1")
         document.getElementById("stamp-img-" + String(displayedMarkerId)).src = "../images/stamps/s" + String(displayedMarkerId) + ".png"
         ga('set', 'dimension1', String(currentPoints));
