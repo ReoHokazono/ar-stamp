@@ -29,8 +29,20 @@
     
 
     <a-scene embedded arjs="trackingMethod:best; debugUIEnabled:false;">      
+
+        <a-assets>
+            <a-asset-item id="m2" src="/models/M2/M2.gltf"></a-asset-item>   
+        </a-assets>
+    
+
         <a-marker preset="custom" type="pattern" url="../marker/m01.patt" markerid="1" >
-            <a-box position="0 0.7 0" color="#742DC0" >
+            <a-obj-model
+                gltf-model="#m2"
+                scale="1 1 1"
+                position="0 0.7 0">
+            </a-obj-model>
+
+            <!-- <a-box position="0 0.7 0" color="#742DC0" >
                 <a-animation
                     attribute="rotation"
                     from="0 0 0"
@@ -57,7 +69,7 @@
                     easing="linear"
                     repeat="indefinite"
                 ></a-animation>
-            </a-text>
+            </a-text> -->
         </a-marker>     
         
         <a-marker preset="custom" type="pattern" url="../marker/m02.patt" markerid="2" >
