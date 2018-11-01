@@ -271,3 +271,8 @@ video {
     font-size: 1.4rem;
     margin-bottom: 20px;
 }
+
+#map-img{
+    width: 100%;
+    overflow: scroll;
+}
