@@ -82,7 +82,7 @@ if (currentPoints == null) {
 
 const restPoints = fullPoints - currentPoints
 if (restPoints == 0) {
-    document.getElementById("stamp-num-text").innerText = "コンプリートしました!この画面を受付で見せてください。"
+    document.getElementById("stamp-num-text").innerText = "コンプリートしました!<br />この画面を受付で見せてください。"
     document.getElementById("stamp-complete").style.display = "block"
 } else {
     const displayText = "残り" + String(restPoints) + "ヶ所です"
@@ -123,7 +123,7 @@ setInterval(() => {
 
         let displayText = ""
         if (restPoints == 0) {
-            document.getElementById("stamp-num-text").innerText = "コンプリートしました!この画面を受付で見せてください。"
+            document.getElementById("stamp-num-text").innerHTML = "コンプリートしました!<br />この画面を受付で見せてください。"
             document.getElementById("stamp-complete").style.display = "block"
         } else {
             const displayText = "残り" + String(restPoints) + "ヶ所です"
@@ -170,6 +170,44 @@ let image = new Image()
 image.src = "../images/stamps/complete.png"
 
 const mainAssets = document.getElementById("main-assets")
+
+// Water 流体力学
+const waterObj = document.createElement("a-asset-item")
+waterObj.setAttribute("id","water-obj")
+waterObj.setAttribute("src","/models/water/M1.obj")
+
+const waterMtl = document.createElement("a-asset-item")
+waterMtl.setAttribute("id","water-mtl")
+waterMtl.setAttribute("src","/models/water/M1.mtl")
+
+const waterEty = document.createElement("a-entity")
+waterEty.setAttribute("id","water-entity")
+waterEty.setAttribute("obj-model","obj:#water-obj; mtl:#water-mtl;")
+waterEty.setAttribute("position","0 1.3 0")
+waterEty.setAttribute("scale","1 1 1")
+
+mainAssets.appendChild(waterObj)
+mainAssets.appendChild(waterMtl)
+document.getElementById("m01").appendChild(waterEty)
+
+// Steel 材料力学
+const steelObj = document.createElement("a-asset-item")
+steelObj.setAttribute("id","steel-obj")
+steelObj.setAttribute("src","/models/steel/M3.obj")
+
+const steelMtl = document.createElement("a-asset-item")
+steelMtl.setAttribute("id","steel-mtl")
+steelMtl.setAttribute("src","/models/steel/M3.mtl")
+
+const steelEty = document.createElement("a-entity")
+steelEty.setAttribute("id","steel-entity")
+steelEty.setAttribute("obj-model","obj:#steel-obj; mtl:#steel-mtl;")
+steelEty.setAttribute("position","0 1.3 0")
+steelEty.setAttribute("scale","1 1 1")
+
+mainAssets.appendChild(steelObj)
+mainAssets.appendChild(steelMtl)
+document.getElementById("m02").appendChild(steelEty)
 
 // Control (Robot) 制御工学実験室
 const controlObj = document.createElement("a-asset-item")
