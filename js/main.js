@@ -82,7 +82,7 @@ if (currentPoints == null) {
 
 const restPoints = fullPoints - currentPoints
 if (restPoints == 0) {
-    document.getElementById("stamp-num-text").innerText = "コンプリートしました!<br />この画面を受付で見せてください。"
+    document.getElementById("stamp-num-text").innerHTML = "コンプリートしました!<br />この画面を受付で見せてください。"
     document.getElementById("stamp-complete").style.display = "block"
 } else {
     const displayText = "残り" + String(restPoints) + "ヶ所です"
