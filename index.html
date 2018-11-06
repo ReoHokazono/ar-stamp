@@ -41,7 +41,7 @@
         var parser = new UAParser();
         var result = parser.getResult();
         var discElement = document.getElementById("link-description");
-        if (result.browser.name != "Mobile Safari" && result.os.name == "iOS"){
+        if (result.browser.name == "Mobile Safari" && result.os.name == "iOS"){
             discElement.innerHTML = "(iOSをご利用の方はSafariで開いてください)";
         }else if (result.os.name == "iOS" && result.os.version.startsWith("10")){
             discElement.innerHTML = "iOS10では正常に動作しない場合があります";
