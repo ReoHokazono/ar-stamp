@@ -109,7 +109,7 @@ setInterval(() => {
         return
     }
 
-    if (displayTimeCount == 8 && markerIsShown) {
+    if (displayTimeCount == 15 && markerIsShown) {
         const alreadyDetected = localStorage.getItem("s" + String(displayedMarkerId), "1")
         if (alreadyDetected) { return }
 
