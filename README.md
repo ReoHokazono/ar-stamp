@@ -7,4 +7,4 @@ AR stamp rally application for exhibition of mechanical engineering department. 
 [Preview(YouYube)](https://youtu.be/Ad5NbL-oIcU)
 
 ## Marker
-[Marker images to test AR function](https://github.com/ReoHokazono/ar-stamp/marker-png)
+[Marker images to test AR function](https://github.com/ReoHokazono/ar-stamp/tree/master/marker-png)
